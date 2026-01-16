@@ -1,0 +1,30 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/marcosgomesneto/bun-devcontainers/tree/main/src/basic-bun
+{
+  "name": "Bun",
+  "dockerFile": "Dockerfile",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true
+    }
+  },
+  "mounts": [
+    "type=bind,source=${localEnv:HOME}/.config/devcontainer/zshrc,target=/root/.zshrc,readonly"
+  ],
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "oven.bun-vscode",
+        "Asuka.insertnumbers",
+        "christian-kohler.path-intellisense",
+        "andrewmcodes.tailwindcss-extension-pack",
+        "formulahendry.auto-close-tag",
+        "csstools.postcss"
+      ]
+    }
+  },
+  "postCreateCommand": "sh .devcontainer/postCreate.sh"
+}

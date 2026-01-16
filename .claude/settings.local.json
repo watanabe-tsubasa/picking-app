@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(git -C /workspaces/picking-app log --oneline -10)",
+      "Bash(bun run:*)",
+      "Bash(bun add:*)",
+      "Bash(ls:*)",
+      "Bash(sqlite3:*)",
+      "Bash(bun -e:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)"
+    ]
+  }
+}

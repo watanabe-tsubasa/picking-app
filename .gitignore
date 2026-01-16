@@ -5,3 +5,7 @@
 # React Router
 /.react-router/
 /build/
+
+# Database
+/local.db
+/drizzle/

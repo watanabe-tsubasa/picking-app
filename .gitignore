@@ -9,3 +9,5 @@
 # Database
 /local.db
 /drizzle/
+
+.env.local

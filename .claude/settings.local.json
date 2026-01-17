@@ -9,7 +9,8 @@
       "Bash(sqlite3:*)",
       "Bash(bun -e:*)",
       "Bash(curl:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(bunx drizzle-kit push:*)"
     ]
   }
 }

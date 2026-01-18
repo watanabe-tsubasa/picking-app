@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useReducer } from "react";
 import {
   Form,
   useLoaderData,
@@ -9,6 +9,7 @@ import {
 import { eq } from "drizzle-orm";
 import { db, stores, workers, orders, eachPicks } from "~/db";
 import type { Route } from "./+types/pick";
+import { initial, reducer } from "./reducer";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -173,7 +174,8 @@ export default function PickingPick() {
     customer_service_start: "",
     customer_service_finish: "",
   });
-  const [skuCount, setSkuCount] = useState(1);
+  // const [skuCount, setSkuCount] = useState(1);
+  const [skuCount, dispatch] = useReducer(reducer, initial);
   const lastProcessedId = useRef<number | null>(null);
 
   // Reset form after successful save
@@ -195,7 +197,7 @@ export default function PickingPick() {
       customer_service_start: "",
       customer_service_finish: "",
     });
-    setSkuCount(1);
+    dispatch({ type: "reset"});
   }, [fetcher.data, fetcher.state]);
 
   const recordTimestamp = (field: TimestampField) => {
@@ -239,10 +241,10 @@ export default function PickingPick() {
         <input type="hidden" name="_intent" value="save_each_pick" />
         <input type="hidden" name="order_id" value={orderId || ""} />
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-5 gap-2">
 
           {/* Worker select */}
-          <div className="bg-white px-4 py-2 rounded-lg shadow">
+          <div className="bg-white px-4 py-2 rounded-lg shadow col-span-2">
             <div className="flex flex-row justify-center items-center h-full">
               <label className="block text-sm font-medium" hidden>作業者</label>
               <select
@@ -260,17 +262,33 @@ export default function PickingPick() {
           </div>
 
           {/* SKU count */}
-          <div className="bg-white px-4 py-2 rounded-lg shadow">
+          <div className="bg-white px-4 py-2 rounded-lg shadow col-span-3">
             <div className="flex flex-row justify-center items-center h-full">
               <label className="block text-sm font-medium">商品点数</label>
-              <input
-                type="number"
-                name="sku_count"
-                value={skuCount}
-                onChange={(e) => setSkuCount(Math.max(1, Number(e.target.value)))}
-                min={1}
-                className="w-full px-3 py-2 border rounded text-center text-xl"
-              />
+              <div className="flex flex-row">
+                <button
+                  type="button"
+                  onClick={() => dispatch({ type: "dec" })}
+                  className="px-4 bg-gray-200 rounded-l-xl hover:bg-gray-300"
+                >
+                  −
+                </button>
+                <input
+                  type="number"
+                  name="sku_count"
+                  value={skuCount}
+                  onChange={(e) => dispatch({ type: "set", value: Math.max(1, Number(e.target.value))})}
+                  min={1}
+                  className="w-full px-3 py-2 border text-center text-xl"
+                />
+                <button
+                  type="button"
+                  onClick={() => dispatch({ type: "inc" })}
+                  className="px-4 bg-gray-200 rounded-r-xl hover:bg-gray-300"
+                >
+                  ＋
+                </button> 
+              </div>
             </div>
           </div>
         </div>

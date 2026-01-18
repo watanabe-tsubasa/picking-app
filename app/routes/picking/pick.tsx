@@ -277,7 +277,7 @@ export default function PickingPick() {
                   type="number"
                   name="sku_count"
                   value={skuCount}
-                  onChange={(e) => dispatch({ type: "set", value: Math.max(1, Number(e.target.value))})}
+                  onChange={(e) => dispatch({ type: "set", value: Number(e.target.value)})}
                   min={1}
                   className="w-full px-3 py-2 border text-center text-xl"
                 />

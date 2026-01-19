@@ -49,17 +49,17 @@ export async function action({ request }: Route.ActionArgs) {
   if (intent === "create") {
     const storeId = Number(formData.get("store_id"));
     const workerId = Number(formData.get("worker_id"));
-    const orderDigits7 = formData.get("order_digits7");
+    const orderDigits12 = formData.get("order_digits12");
 
     const errors: Record<string, string> = {};
     if (!storeId) errors.store_id = "店舗を選択してください";
     if (!workerId) errors.worker_id = "作業者を選択してください";
     if (
-      !orderDigits7 ||
-      typeof orderDigits7 !== "string" ||
-      !/^\d{7}$/.test(orderDigits7)
+      !orderDigits12 ||
+      typeof orderDigits12 !== "string" ||
+      !/^\d{12}$/.test(orderDigits12)
     ) {
-      errors.order_digits7 = "注文番号は7桁の数字で入力してください";
+      errors.order_digits12 = "注文番号は12桁の数字で入力してください";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -72,7 +72,7 @@ export async function action({ request }: Route.ActionArgs) {
       .values({
         store_id: storeId,
         worker_id: workerId,
-        order_number: `A${orderDigits7}`,
+        order_number: orderDigits12 as string,
         start_time: now,
         is_completed: false,
         work_date: getJSTDateString(),
@@ -167,20 +167,20 @@ export default function PickingRegister() {
         <div>
           <label className="block text-sm font-medium mb-1">注文番号</label>
           <div className="flex items-center gap-2">
-            <span className="text-lg font-mono">A</span>
+            {/* <span className="text-lg font-mono">A</span> */}
             <input
               type="text"
-              name="order_digits7"
-              pattern="\d{7}"
-              maxLength={7}
-              placeholder="1234567"
+              name="order_digits12"
+              pattern="\d{12}"
+              maxLength={12}
+              placeholder="123456789012"
               className="flex-1 px-3 py-2 border rounded font-mono"
               required
             />
           </div>
-          {actionData?.fieldErrors?.order_digits7 && (
+          {actionData?.fieldErrors?.order_digits12 && (
             <p className="text-red-600 text-sm mt-1">
-              {actionData.fieldErrors.order_digits7}
+              {actionData.fieldErrors.order_digits12}
             </p>
           )}
         </div>

@@ -18,7 +18,7 @@ export const orders = sqliteTable("orders", {
   worker_id: integer("worker_id")
     .notNull()
     .references(() => workers.id),
-  order_number: text("order_number").notNull(), // "A" + 7 digits
+  order_number: text("order_number").notNull(), // "A" + 7 digits or 12 digits
   start_time: text("start_time").notNull(), // ISO timestamp
   end_time: text("end_time"), // ISO timestamp, null if not completed
   is_completed: integer("is_completed", { mode: "boolean" })
